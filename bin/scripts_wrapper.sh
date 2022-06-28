@@ -151,8 +151,9 @@ function dr-find-sagemaker {
             CONTAINER_NAME=$(docker ps --format '{{.Names}}' --filter id=$CONTAINER)
             CONTAINER_PREFIX=$(echo $CONTAINER_NAME | perl -n -e'/(.*)_(algo(.*))_./; print $1')
             COMPOSE_SERVICE_NAME=$(echo $CONTAINER_NAME | perl -n -e'/(.*)_(algo(.*))_./; print $2')
-            COMPOSE_FILE=$(sudo find /tmp/sagemaker -name docker-compose.yaml -exec grep -l "$RUN_NAME" {} + | grep $CONTAINER_PREFIX)
+            COMPOSE_FILE=$(sudo find /tmp/sagemaker -name docker-compose.yaml -exec grep -w -l "$RUN_NAME" {} + | grep $CONTAINER_PREFIX)
             if [[ -n $COMPOSE_FILE ]]; then
+                
                 echo $CONTAINER
                 return
             fi
